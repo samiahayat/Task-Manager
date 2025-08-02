@@ -1,6 +1,6 @@
 **Task Manager**
 
-A full-stack Task Manager web application built with Flask (Python), MongoDB, 
+A Task Manager web application built with Flask (Python), MongoDB, 
 HTML/CSS, and JavaScript. It supports user registration, login, and personalized 
 task management including adding, editing, viewing, deleting, searching, and filtering tasks.
 
