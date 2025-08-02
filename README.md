@@ -37,21 +37,17 @@ task management including adding, editing, viewing, deleting, searching, and fil
 -API Integration: Axios
 
 **Setup Instructions**
-
-1.Clone the repository:
-   git clone https://github.com/samiahayat/Task-Manager.git
-   cd Task-Manager
    
-2.Setup Virtual Environment:
+1.Setup Virtual Environment:
    python -m venv venv
    source venv/bin/activate
    
-3.Install Dependencies:
+2.Install Dependencies:
    pip install -r requirements.txt  
    
-4.Set Up MongoDB uri
+3.Set Up MongoDB uri
 
-5.Run the Flask Server:
+4.Run the Flask Server:
    python app.py 
 
 **Demo video**
