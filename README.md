@@ -7,6 +7,7 @@ task management including adding, editing, viewing, deleting, searching, and fil
 **Features**
 
 -User Authentication (Register/Login)
+
 -Add, Update, Delete Tasks
 -Filter tasks by status: Pending, In Progress, Completed
 -Search tasks by title
