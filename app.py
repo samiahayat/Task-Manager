@@ -3,7 +3,6 @@ from flask_pymongo import PyMongo
 from flask_cors import CORS
 from bson import ObjectId
 from datetime import datetime
-
 app = Flask(__name__)
 CORS(app)
 
@@ -49,9 +48,16 @@ def get_tasks():
 @app.route('/tasks', methods=['POST'])
 def add_task():
     data = request.json
-    data["status"] = "Pending"
-    tasks_collection.insert_one(data)
-    return jsonify({"message": "Task added successfully"})
+    task = {
+        "username": data["username"],
+        "title": data["title"],
+        "description": data["description"],
+        "due_date": data["due_date"],
+        "status": "Pending",
+        "created_at": datetime.now()
+    }
+    mongo.db.tasks.insert_one(task)
+    return jsonify({"message": "Task added successfully!"}), 201
 
 @app.route('/tasks/<task_id>', methods=['PUT'])
 def update_task(task_id):
