@@ -6,7 +6,7 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
-app.config["MONGO_URI"] = "mongodb+srv://samia123:aimas1234@cluster0.5issyjn.mongodb.net/TaskProject?retryWrites=true&w=majority&appName=Cluster0"
+# add mmongodb uri string for connection
 mongo = PyMongo(app)
 
 users_collection = mongo.db.users
@@ -88,3 +88,4 @@ def delete_task(task_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
