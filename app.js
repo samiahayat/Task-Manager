@@ -26,6 +26,36 @@ toggleAuth.addEventListener("click", () => {
   authMessage.textContent = "";
 });
 
+function showToast(message, type = "success") {
+  const toastContainer = document.getElementById("toastContainer");
+  const toastMsg = document.getElementById("toastMsg");
+  const toastText = document.getElementById("toastText");
+
+  // Reset animation and background classes
+  toastMsg.classList.remove("bg-success", "bg-danger", "bg-warning", "animate__fadeOut");
+  toastMsg.classList.add("animate__fadeIn");
+
+  // Set message and background color
+  toastText.textContent = message;
+  if (type === "success") toastMsg.classList.add("bg-success");
+  else if (type === "error") toastMsg.classList.add("bg-danger");
+  else if (type === "warning") toastMsg.classList.add("bg-warning");
+  else toastMsg.classList.add("bg-secondary");
+
+  // Show toast
+  toastContainer.style.display = "block";
+
+  // Auto hide after 3s
+  setTimeout(() => {
+    toastMsg.classList.remove("animate__fadeIn");
+    toastMsg.classList.add("animate__fadeOut");
+
+    setTimeout(() => {
+      toastContainer.style.display = "none";
+    }, 800);
+  }, 3000);
+}
+
 submitBtn.addEventListener("click", async () => {
   if (isRegisterMode) {
     const username = document.getElementById("regUsername").value.trim();
@@ -91,7 +121,7 @@ document.getElementById("addTaskBtn").addEventListener("click", async () => {
   const due_date = dateInput.value;
 
   if (!title || !description || !due_date) {
-    alert("Please fill all fields!");
+    showToast("Please fill all fields!");
     return;
   }
 
@@ -102,7 +132,7 @@ document.getElementById("addTaskBtn").addEventListener("click", async () => {
   });
 
   const data = await res.json();
-  alert(data.message);
+  showToast(data.message);
 
   // Reset input fields
   titleInput.value = "";
@@ -194,10 +224,9 @@ function displayTasks(tasks) {
   <tr>
     <th>Sr. No.</th>
     <th>Title</th>
-    <th>Description</th>
     <th>Due Date</th>
     <th>Status</th>
-    <th>Action</th>
+    <th>Actions</th>
   </tr>
 </thead>
 
@@ -220,17 +249,16 @@ function displayTasks(tasks) {
     <tr class="${highlightClass}">
       <td>${index + 1}</td>
       <td>${task.title}</td>
-      <td>${task.description}</td>
       <td>${dueDate.toLocaleDateString()}</td>
       <td>
         <span class="badge ${task.status === 'Completed' ? 'bg-success' : task.status === 'In Progress' ? 'bg-info text-dark' : 'bg-warning text-dark'}">
           ${task.status}
         </span>
       </td>
-      <td class="text-center">
-  <div class="d-flex flex-column align-items-center gap-2">
+     <td class="text-center">
+  <div class="d-flex justify-content-center align-items-center gap-3">
     <i class="bi bi-eye text-info fs-5 cursor-pointer"
-       onclick="showDetails('${escapeQuotes(task.title)}', '${escapeQuotes(task.description)}', '${task.due_date}', '${task.status}')"
+       onclick="showDetails('${escapeQuotes(task.title)}', '${escapeQuotes(task.description)}', '${task.due_date}', '${task.status}', '${task.created_at || ''}')"
        title="Details"></i>
     <i class="bi bi-pencil-square text-warning fs-5 cursor-pointer"
        onclick="showEditForm('${task._id}', '${escapeQuotes(task.title)}', '${escapeQuotes(task.description)}', '${task.due_date}', '${task.status}')"
@@ -262,38 +290,67 @@ function showEditForm(id, title, desc, date, status) {
   const modal = new bootstrap.Modal(document.getElementById("editTaskModal"));
   modal.show();
 }
-
 document.getElementById("saveEditBtn").addEventListener("click", async () => {
-  const updatedTitle = document.getElementById("editTitle").value;
-  const updatedDesc = document.getElementById("editDesc").value;
+  const updatedTitle = document.getElementById("editTitle").value.trim();
+  const updatedDesc = document.getElementById("editDesc").value.trim();
   const updatedDate = document.getElementById("editDate").value;
   const updatedStatus = document.getElementById("editStatus").value;
 
   if (!updatedTitle || !updatedDesc || !updatedDate) {
-    alert("Please fill in all fields.");
+    showToast("Please fill in all fields.");
     return;
   }
 
-  await fetch(`http://localhost:5000/tasks/${editTaskId}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      title: updatedTitle,
-      description: updatedDesc,
-      due_date: updatedDate,
-      status: updatedStatus
-    })
-  });
+  try {
+    const res = await fetch(`http://localhost:5000/tasks/${editTaskId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: updatedTitle,
+        description: updatedDesc,
+        due_date: updatedDate,
+        status: updatedStatus
+      })
+    });
 
-  document.getElementById("editTaskSection").style.display = "none";
+    const data = await res.json();
+
+    if (res.ok) {
+  showToast(data.message || "Task updated successfully", "success");
+
+  const editModal = bootstrap.Modal.getInstance(document.getElementById("editTaskModal"));
+  if (editModal) editModal.hide();
+
   loadTasks();
+} else {
+  showToast(data.message || "Failed to update task", "error");
+}
+
+  } catch (error) {
+    console.error("Update error:", error);
+    showToast("Something went wrong. Please try again.");
+  }
 });
 
-function showDetails(title, desc, date, status) {
+
+function showDetails(title, desc, date, status, createdAt = "") {
   document.getElementById("detailTitle").textContent = title;
   document.getElementById("detailDesc").textContent = desc;
-  document.getElementById("detailDate").textContent = new Date(date).toLocaleDateString();
+document.getElementById("detailDate").textContent = new Date(date).toLocaleDateString();
+
   document.getElementById("detailStatus").textContent = status;
+
+  if (createdAt) {
+    const createdDate = new Date(createdAt);
+    const createdInfo = createdDate.toLocaleString();
+    if (!document.getElementById("detailCreated")) {
+      const p = document.createElement("p");
+      p.innerHTML = `<strong>Created At:</strong> <span id="detailCreated">${createdInfo}</span>`;
+      document.querySelector("#taskDetailsModal .modal-body").appendChild(p);
+    } else {
+      document.getElementById("detailCreated").textContent = createdInfo;
+    }
+  }
 
   const modal = new bootstrap.Modal(document.getElementById("taskDetailsModal"));
   modal.show();
@@ -303,9 +360,59 @@ function closeDetails() {
   document.getElementById("taskDetailsSection").style.display = "none";
 }
 
-async function deleteTask(id) {
-  await fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" });
-  loadTasks();
+function deleteTask(id) {
+  showCustomConfirm("Are you sure you want to delete this task?").then((confirmed) => {
+    if (confirmed) {
+      fetch(`http://localhost:5000/tasks/${id}`, {
+        method: "DELETE"
+      })
+      .then(async (response) => {
+        const data = await response.json();
+        if (response.ok) {
+          showToast(data.message || "Task deleted successfully", "success");
+          loadTasks(); // Reload task list
+        } else {
+          showToast(data.message || "Failed to delete task", "error");
+        }
+      })
+      .catch(error => {
+        showToast("Error deleting task", "error");
+        console.error(error);
+      });
+    }
+  });
+}
+
+
+function showCustomConfirm(message) {
+  return new Promise((resolve) => {
+    const confirmBox = document.getElementById("customConfirmBox");
+    const confirmText = document.getElementById("confirmText");
+    const confirmYes = document.getElementById("confirmYes");
+    const confirmCancel = document.getElementById("confirmCancel");
+
+    confirmText.innerText = message;
+    confirmBox.classList.remove("d-none");
+
+    const cleanUp = () => {
+      confirmBox.classList.add("d-none");
+      confirmYes.removeEventListener("click", onYes);
+      confirmCancel.removeEventListener("click", onCancel);
+    };
+
+    const onYes = () => {
+      cleanUp();
+      resolve(true);
+    };
+
+    const onCancel = () => {
+      cleanUp();
+      resolve(false);
+    };
+
+    confirmYes.addEventListener("click", onYes);
+    confirmCancel.addEventListener("click", onCancel);
+  });
 }
 
 document.getElementById("viewAllBtn").addEventListener("click", loadTasks);
@@ -322,7 +429,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
   const query = document.getElementById("searchInput").value.trim().toLowerCase();
 
   if (!query) {
-    alert("Enter a title to search.");
+    showToast("Enter a title to search.");
     return;
   }
 
