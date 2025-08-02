@@ -4,6 +4,7 @@ A Task Manager web application built with Flask (Python), MongoDB,
 HTML/CSS, and JavaScript. It supports user registration, login, and personalized 
 task management including adding, editing, viewing, deleting, searching, and filtering tasks.
 
+
 **Features**
 
 -User Authentication (Register/Login)
@@ -20,7 +21,10 @@ task management including adding, editing, viewing, deleting, searching, and fil
 
 -View task details in a floating panel
 
--Responsive UI using Bootstrap
+-Responsive UI using Bootstrap in both mobile and pc 
+
+-show validation and error handling 
+
 
 **Technologies Used**
 
@@ -49,5 +53,11 @@ task management including adding, editing, viewing, deleting, searching, and fil
 
 5.Run the Flask Server:
    python app.py 
+
+**Demo video**
+
+Click here : https://drive.google.com/file/d/136WSy72wnlBhBYiFIklgbdvLfg-2EIAo/view?usp=drivesdk
+
+
 
    
