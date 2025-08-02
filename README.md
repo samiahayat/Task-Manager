@@ -1,9 +1,11 @@
 **Task Manager**
+
 A full-stack Task Manager web application built with Flask (Python), MongoDB, 
 HTML/CSS, and JavaScript. It supports user registration, login, and personalized 
 task management including adding, editing, viewing, deleting, searching, and filtering tasks.
 
 **Features**
+
 -User Authentication (Register/Login)
 -Add, Update, Delete Tasks
 -Filter tasks by status: Pending, In Progress, Completed
@@ -14,12 +16,14 @@ task management including adding, editing, viewing, deleting, searching, and fil
 -Responsive UI using Bootstrap
 
 **Technologies Used**
+
 -Backend: Flask (Python), PyMongo
 -Database: MongoDB Atlas online (NoSQL)
 -Frontend: HTML5, CSS3, JavaScript, Bootstrap 5
 -API Integration: Axios
 
 **Setup Instructions**
+
 1.Clone the repository:
    git clone https://github.com/samiahayat/Task-Manager.git
    cd Task-Manager
