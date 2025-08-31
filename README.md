@@ -1,62 +1,49 @@
-                          **📋 Task Manager**
+# 📌 Task Manager – Team Collaboration & Analytics
 
-A Task Manager web application built with Flask (Python), MongoDB, 
-HTML/CSS, and JavaScript. It supports user registration, login, and personalized 
-task management including adding, editing, viewing, deleting, searching, and filtering tasks.
+A full-stack **Task Management System** built with **Flask (Python)**, **MongoDB**, and a **responsive HTML/Bootstrap frontend**.  
+Supports **multi-user collaboration, real-time notifications, analytics dashboard, task attachments, and dark mode**.  
+Deployed live with a single URL for frontend + backend.
 
+---
 
-**Features**
+## 🚀 Features
 
--User Authentication (Register/Login)
+### ✅ Core Task Management
+- Add, edit, delete tasks  
+- Search, filter by status (Pending, In Progress, Completed)  
+- Sort tasks by due date  
+- Task details panel with edit/delete options  
 
--Add, Update, Delete Tasks
+### 👥 Multi-User Collaboration
+- Task owners can **share tasks with other users**  
+- Shared tasks appear in collaborators’ dashboards  
+- Permissions ensure only authorized users can edit/share  
 
--Filter tasks by status: Pending, In Progress, Completed
+### 🔔 Real-Time Notifications
+- Live notifications using **Socket.IO**  
+- Users are notified when:
+  - A task is shared with them  
+  - A task’s status is updated  
+- `GET /notifications` endpoint for past notifications  
 
--Search tasks by title
+### 📊 Analytics Dashboard
+- Overview of tasks (created, completed, pending)  
+- Weekly/monthly trends (completed vs overdue)  
+- Status breakdown with **charts & graphs**  
+- Powered by MongoDB **aggregation queries**  
 
--Sort tasks by due date
+### 🌙 Final Enhancements
+- **Dark Mode Toggle** for UI  
+- **Attachments**: Upload images/files with tasks  
+- **Mobile Responsive** design  
+- End-to-end tested before release  
 
--Task progress bar (overall completion %)
+---
 
--View task details in a floating panel
+## 🛠️ Tech Stack
 
--Responsive UI using Bootstrap in both mobile and pc 
-
--show validation and error handling 
-
-
-**Technologies Used**
-
--Backend: Flask (Python), PyMongo
-
--Database: MongoDB Atlas online (NoSQL)
-
--Frontend: HTML5, CSS3, JavaScript, Bootstrap 5
-
--API Integration: Axios
-
-**Setup Instructions**
-1.Clone the Repository:
-   git clone https://github.com/samiahayat/Task-Manager.git
-   cd Task-Manager
-   
-2.Setup Virtual Environment:
-   python -m venv venv
-   source venv/bin/activate
-   
-3.Install Dependencies:
-   pip install -r requirements.txt  
-   
-4.Set Up MongoDB uri
-
-5.Run the Flask Server:
-   python app.py 
-
-**Demo video**
-
-Click here : https://drive.google.com/file/d/136WSy72wnlBhBYiFIklgbdvLfg-2EIAo/view?usp=drivesdk
-
-
-
-   
+- **Backend**: Flask (Python), Flask-SocketIO, Flask-PyMongo  
+- **Database**: MongoDB (Atlas / Local)  
+- **Frontend**: HTML, Bootstrap 5, JavaScript (Axios for API calls)  
+- **Charts**: Chart.js / Recharts  
+- **Deployment**: Render / Vercel / Heroku  
