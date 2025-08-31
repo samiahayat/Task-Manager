@@ -47,3 +47,5 @@ Deployed live with a single URL for frontend + backend.
 - **Frontend**: HTML, Bootstrap 5, JavaScript (Axios for API calls)  
 - **Charts**: Chart.js / Recharts  
 - **Deployment**: Render / Vercel / Heroku  
+
+
